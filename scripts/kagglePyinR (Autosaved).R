@@ -34,4 +34,4 @@ proportion_men_survived = sum(men_on_board$survived) / length(men_on_board$survi
 survived <- as.integer(testData$sex=="female")
 
 testData <- data.frame("survived"=survived, testData)
-write.csv(testData, "hhh.csv")
+write.csv(testData, "./data/genderbasedmodelpy.csv")
