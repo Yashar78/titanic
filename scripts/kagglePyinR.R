@@ -1,6 +1,7 @@
 #kaggele competition 
 #Rahim delaviz 
-setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
+#setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
+setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
 inputTrainFile = "./data/train.csv"
 trainData = read.csv(inputTrainFile)
 
@@ -24,12 +25,14 @@ women_on_board = trainData[trainData$sex=="female",]
 men_on_board = trainData[trainData$sex=="male",]
 
 cat("proportion women survided:\t",
-proportion_women_survived = sum(women_on_board$survived) / length(women_on_board$survived))
+    proportion_women_survived = sum(women_on_board$survived) / length(women_on_board$survived))
 
 cat("proportion men survided:\t",
-proportion_men_survived = sum(men_on_board$survived) / length(men_on_board$survived))
+    proportion_men_survived = sum(men_on_board$survived) / length(men_on_board$survived))
 
-#read test data 
 
-survided <- c()
+survived <- as.integer(testData$sex=="female")
+
+t <- data.frame("survived"=survived, testData)
+write.csv(t, "./data/genderbasedmodelR.csv", row.names=F)
 
