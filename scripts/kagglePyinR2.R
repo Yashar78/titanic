@@ -101,11 +101,8 @@ for (i in 1:length(testData[,1])){
   
   
   if (is.na(s)){
-  	#cat("sex=",sex2)
     if (sex2=="female")
-      {
-      	#cat("sssssssssssss")
-      testSurvived <- c(testSurvived,1)}
+      testSurvived <- c(testSurvived,1)
     else
       testSurvived <- c(testSurvived,0)
   }
