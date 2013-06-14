@@ -1,33 +1,24 @@
 #kaggele competition 
 #Rahim delaviz 
-setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
-#setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
-inputTrainFile = "./data/train.csv"
-trainData = read.csv(inputTrainFile)
-#trainData$Survival <- NULL
-#write.csv(trainData, inputTrainFile, row.names=F)
-inputTestFile =  "./data/test.csv"
-testData = read.csv(inputTestFile)
+#https://github.com/mattdelhey/kaggle-titanic
+#setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
+setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
+#trainDataClean = read.csv("./data/train_clean.csv")
+#testDataClean  = read.csv("./data/test_clean.csv")
+
+load("./data/train_clean.RData")
+load("./data/test_clean.RData")
+
+#unlist(lapply(lapply(trainDataClean , is.na), sum))
 
 library(randomForest)
-trainData$survived[1] <- 1
-trinRF <- randomForest( survived ~ sex+age, data= trainData)
+  #+pclass+fare+sibsp+embarked+parch
+trainRF <- randomForest( survived ~ sex+catAge+pclass+catFare+embarked+numFamily, ntree=5000,  importance=T,  data= rawTrainData)
 
-trainData$age <- na.roughfix(trainData$age)
-trianRF <- randomForest( survived ~ sex+age+pclass+fare+sibsp+embarked+parch, data= trainData)
-
-#plot(randomForest( survived ~ sex+age+pclass+fare+sibsp+embarked+parch, ntree=500, data= trainData) )
-#trainData$embarked[trainData$embarked==""] <- "C"
-
-trainRF <- randomForest( survived ~ sex+age+pclass+fare+sibsp+embarked+parch, ntree=500, importance=T, data= trainData) 
 #testData$embarked[testData$embarked==""] <- "C"
 
 round(importance(trainRF),2)
-predict(trainRF, trainData[1:10,])
 
-predTest <- predict(trainRF, subset(testData, select=c(sex,age,pclass,fare,sibsp,embarked,parch))   , type="response")
-
-lapply(testData, levels)
-
-
-
+predTest <- predict(trainRF, rawTestData  , type="response")
+rawTestData$survived <- predTest
+write.csv(rawTestData, file="./data/NaiveRFModelCatAge.csv", row.names=F)
