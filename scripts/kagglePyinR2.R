@@ -22,14 +22,15 @@ testData = read.csv(inputTestFile)
 # library(gmodels)
 # CrossTable(trainData$survived, trainData$pclass)
 # 
-# trainData$col[trainData$pclass == 1] <-"blue"
-# trainData$col[trainData$pclass == 2] <-"red"
-# trainData$col[trainData$pclass == 3] <-"green"
+trainData <- rawTrainData
+trainData$col[trainData$pclass == 1] <-"blue"
+trainData$col[trainData$pclass == 2] <-"red"
+trainData$col[trainData$pclass == 3] <-"green"
 # 
-# plot(trainData$age , trainData$survived, col=ifelse (trainData$sex=="female", "blue", "red"))
-# plot(trainData$pclass , trainData$survived, col=trainData$col )
-# plot(trainData$fare , trainData$survived, col=ifelse (trainData$sex=="female", "blue", "red"))
-# ticketPriceCut <- cut(trainData$fare, breaks=c(0,10,20,30,max(trainData$fare)))
+plot(trainData$age , trainData$survived, col=ifelse (trainData$sex=="female", "blue", "red"))
+plot(trainData$pclass, trainData$survived, col=trainData$col )
+plot(trainData$fare , trainData$survived, col=ifelse (trainData$sex=="female", "blue", "red"))
+ticketPriceCut <- cut(trainData$fare, breaks=c(0,10,20,30,max(trainData$fare)))
 
 price <- c()
 sexType <- c()

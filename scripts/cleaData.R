@@ -3,6 +3,11 @@
 # The URL https://github.com/mattdelhey/kaggle-titanic is perfect for learning, some of 
 # the code is taken from there, check it for mor info.
 rm(list=ls())
+library(plyr)
+library(foreign)
+library(stringr)
+
+
 #setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
 setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
 inputTrainFile = "./data/train.csv"
@@ -16,8 +21,6 @@ rawTestData = read.csv("./data/test.csv", stringsAsFactor = F)
 # Create a survived variable in the test data set
 # Set "0" (did not survive) as the default value
 
-library(plyr)
-library(foreign)
 
 survived <- 0
 rawTestData <- data.frame("survived"=survived, rawTestData)
@@ -98,9 +101,58 @@ rawTrainData$embarked <- factor(rawTrainData$embarked)
 rawTrainData$survived[is.na(rawTrainData$survived)] <- 1
 rawTrainData$survived <- factor(rawTrainData$survived)
 
-write.csv(rawTrainData, "./data/train_clean.csv", row.names=F)
-write.csv(rawTestData, "./data/test_clean.csv", row.names=F)
 
-save("rawTrainData", file="./data/train_clean.RData")
-save("rawTestData", file="./data/test_clean.RData")
+#determine sex and society class by name 
+
+rawTrainData$sexByName <- 0
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Mr. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Mrs. "))] <- "Mrs"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Mme. "))] <- "Mrs"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Miss. "))] <- "Miss"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Ms. "))] <- "Miss"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Mlle. "))] <- "Miss"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Capt. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Major. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Col. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Master. "))] <- "Mast"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Rev. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Dr. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Don. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Countess. "))] <- "Mrs"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Jonkheer. "))] <- "Mr"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Lady. "))] <- "Mrs"
+rawTrainData$sexByName[!is.na(str_extract(rawTrainData$name, " Sir. "))] <- "Mr"
+rawTrainData$sexByName <- factor(rawTrainData$sexByName)
+
+
+
+rawTestData$sexByName <- 0
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Mr. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Mrs. "))] <- "Mrs"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Mme. "))] <- "Mrs"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Miss. "))] <- "Miss"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Ms. "))] <- "Miss"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Mlle. "))] <- "Miss"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Capt. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Major. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Col. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Master. "))] <- "Mast"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Rev. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Dr. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Don. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Countess. "))] <- "Mrs"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Jonkheer. "))] <- "Mr"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Lady. "))] <- "Mrs"
+rawTestData$sexByName[!is.na(str_extract(rawTestData$name, " Sir. "))] <- "Mr"
+#This is only one missing from the test dataset which is not clear he/she "Oliva y Ocana, Dona. Fermina"
+rawTestData$sexByName[rawTestData$sexByName==0] <- "Mr"
+rawTestData$sexByName <- factor(rawTestData$sexByName)
+
+
+
+rawTestData$write.csv(rawTrainData, "./data/train_clean_new_sex.csv", row.names=F)
+write.csv(rawTestData, "./data/test_clean_new_sex.csv", row.names=F)
+
+save("rawTrainData", file="./data/train_clean_new_sex.RData")
+save("rawTestData", file="./data/test_clean_new_sex.RData")
 

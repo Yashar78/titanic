@@ -35,4 +35,4 @@ if __name__ == '__main__':
     data = readData(inputFile)
     print len(data)
     print data[0:2]
-    print data[1::,0]
+    print data[0::,0]
