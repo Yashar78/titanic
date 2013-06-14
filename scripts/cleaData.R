@@ -3,7 +3,8 @@
 # The URL https://github.com/mattdelhey/kaggle-titanic is perfect for learning, some of 
 # the code is taken from there, check it for mor info.
 rm(list=ls())
-setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
+#setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
+setwd("/Domain/tudelft.net/Users/rdelavizaghbolagh/Coursera/DataScience/kaggle/titanic")
 inputTrainFile = "./data/train.csv"
 rawTrainData = read.csv("./data/train.csv", stringsAsFactor = F)
 
@@ -74,6 +75,9 @@ rawTrainData$catAge[rawTrainData$age<22] <- "4"
 rawTrainData$catAge[rawTrainData$age<32] <- "5"
 rawTrainData$catAge[rawTrainData$age<50] <- "6"
 rawTrainData$catAge[rawTrainData$age>=50] <- "7"
+rawTrainData$catAge <- factor(rawTrainData$catAge)
+
+
 
 rawTestData$catAge[rawTestData$age<5] <- "1"
 rawTestData$catAge[rawTestData$age<10] <- "2"
@@ -82,6 +86,7 @@ rawTestData$catAge[rawTestData$age<22] <- "4"
 rawTestData$catAge[rawTestData$age<32] <- "5"
 rawTestData$catAge[rawTestData$age<50] <- "6"
 rawTestData$catAge[rawTestData$age>=50] <- "7"
+rawTestData$catAge <- factor(rawTestData$catAge)
 
 rawTrainData$numFamily <- rawTrainData$sibsp + rawTrainData$parch
 rawTestData$numFamily <- rawTestData$sibsp + rawTestData$parch
