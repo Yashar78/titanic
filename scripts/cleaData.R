@@ -1,5 +1,7 @@
 #reads and creates a new set of data where categorical variables are factorized and 
 # missing values are imputed
+# The URL https://github.com/mattdelhey/kaggle-titanic is perfect for learning, some of 
+# the code is taken from there, check it for mor info.
 
 setwd("/Users/rahimdelaviz/Coursera/IntroDataScience/courseMaterial/kaggle/titanic")
 inputTrainFile = "./data/train.csv"
@@ -41,12 +43,6 @@ unlist(lapply(lapply(rawTestData , is.na), sum))
 #age has the highest number of missing values.
 # Combine the data sets for age/fare modeling
 full <- join(rawTestData, rawTrainData, type = "full")
-
-# Multiple Imputation
-#library(mi)
-#inf <- mi.info(rawTrainData)
-#imp <- mi(rawTrainData, info = inf, check.coef.convergence = FALSE, n.imp = 2, n.iter = 6, seed = 1111)
-#plot(imp)
 
 #builds linear models
 age.mod <- lm(age ~ pclass + sex + sibsp + parch + fare, data = full)
@@ -94,15 +90,6 @@ rawTestData$numFamily <- rawTestData$sibsp + rawTestData$parch
 
 
 
-#Check later 
-# Random Forest to find missing values
-#full.age <- full[!is.na(full$age), ] # Remove NA's
-#full.age$fare[is.na(full.age$fare)] <- predict(fare.mod, full.age)[is.na(full.age$fare)]
-
-#age.rf <- randomForest(age ~ pclass + sex + sibsp + parch + fare, data = full.age, ntree = 15000)
-#train$age[is.na(train$age)] <- predict(age.rf, train)[is.na(train$age)]
-#test$age[is.na(test$age)] <- predict(age.rf, test)[is.na(test$age)]
-
 # Replace missing values in embarked with most popular
 rawTrainData$embarked[rawTrainData$embarked == ""] <- "S"
 rawTrainData$embarked <- factor(rawTrainData$embarked)
@@ -115,8 +102,4 @@ write.csv(rawTestData, "./data/test_clean.csv", row.names=F)
 
 save("rawTrainData", file="./data/train_clean.RData")
 save("rawTestData", file="./data/test_clean.RData")
-
-
-
-
 
