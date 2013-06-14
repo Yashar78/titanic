@@ -13,7 +13,7 @@ load("./data/test_clean.RData")
 
 library(randomForest)
   #+pclass+fare+sibsp+embarked+parch
-trainRF <- randomForest( survived ~ sex+catAge+pclass+catFare+embarked+numFamily, ntree=5000,  importance=T,  data= rawTrainData)
+trainRF <- randomForest( survived ~ sex+catAge+pclass+catFare+numFamily, ntree=500,  importance=T,  data= rawTrainData)
 
 #testData$embarked[testData$embarked==""] <- "C"
 
